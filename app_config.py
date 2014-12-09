@@ -15,20 +15,20 @@ NAMES
 """
 # Project name to be used in urls
 # Use dashes, not underscores!
-PROJECT_SLUG = '$NEW_PROJECT_SLUG'
+PROJECT_SLUG = 'there-goes-the-neighborhood'
 
 # Project name to be used in file paths
-PROJECT_FILENAME = '$NEW_PROJECT_FILENAME'
+PROJECT_FILENAME = 'gentrification-app'
 
 # The name of the repository containing the source
-REPOSITORY_NAME = '$NEW_REPOSITORY_NAME'
+REPOSITORY_NAME = 'gentrification-app'
 GITHUB_USERNAME = 'chagan'
 REPOSITORY_URL = 'git@github.com:%s/%s.git' % (GITHUB_USERNAME, REPOSITORY_NAME)
 REPOSITORY_ALT_URL = None # 'git@bitbucket.org:nprapps/%s.git' % REPOSITORY_NAME'
 
 # Project name used for assets rig
 # Should stay the same, even if PROJECT_SLUG changes
-ASSETS_SLUG = '$NEW_PROJECT_SLUG'
+ASSETS_SLUG = 'gentrification-app'
 
 """
 DEPLOYMENT
@@ -94,7 +94,7 @@ DEBUG = True
 """
 COPY EDITING
 """
-COPY_GOOGLE_DOC_URL = 'https://docs.google.com/spreadsheet/ccc?key=0AkY5o_aAkwFydEctaXllbzlGUGRLanVQc0hSMlo5YXc'
+COPY_GOOGLE_DOC_URL = 'https://docs.google.com/a/chicagopublicradio.org/spreadsheet/ccc?key=0Atv9GAazkNEXdDVNY1d6aXY0ZHZOdmJ0ekdhWGx5RXc'
 COPY_PATH = 'data/copy.xlsx'
 
 """
@@ -106,8 +106,8 @@ SHARE_URL = 'http://%s/%s/' % (PRODUCTION_S3_BUCKET['bucket_name'], PROJECT_SLUG
 SERVICES
 """
 GOOGLE_ANALYTICS = {
-    'ACCOUNT_ID': 'none', #add id here
-    'DOMAIN': PRODUCTION_S3_BUCKET['bucket_name'],
+    'ACCOUNT_ID': 'UA-369047-1',
+    'DOMAIN': 'wbez.org',
     'TOPICS': '' # e.g. '[1014,3,1003,1002,1001]'
 }
 
