@@ -14,6 +14,18 @@ app = Flask(__name__)
 app.add_template_filter(smarty_filter, name='smarty')
 app.add_template_filter(urlencode_filter, name='urlencode')
 
+# Filters
+def format_currency(value):
+    value = int(value)
+    return "${:,}".format(value)
+
+def format_comma(value):
+    value = int(value)
+    return "{:,}".format(value)
+
+app.jinja_env.filters['format_currency'] = format_currency
+app.jinja_env.filters['format_comma'] = format_comma
+
 # Example application views
 @app.route('/')
 def index():
