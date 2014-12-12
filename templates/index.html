@@ -64,7 +64,8 @@
                                 <th>Income</th>
                                 <th>Median Home Value</th>
                                 <th>Owner Occupied Housing %</th>
-                                <th>Typology</th>
+                                <th>2000 Socioeconomic Score</th>
+                                <th>2010 Socioeconomic Score</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -78,7 +79,8 @@
                             <td>{{ row.income_10 | format_currency }}</td>
                             <td>{{ row.Hval_10 | format_currency }}</td>
                             <td>{{ '%0.f'| format(row.owner_10|float) }}</td>
-                            <td>{{ row.Typology }}</td>
+                            <td>{{ row.S_2000 }}</td>
+                            <td>{{ row.S_2010 }}</td>
                         </tr>
                         {% endfor %}
                         </tbody>

@@ -7,19 +7,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <base target="_top" />
-
+        <!-- Leaflet -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    {{ CSS.push('less/app.less') }}
+    {% block extra_css %}{% endblock extra_css %}
+    {{ CSS.render('css/app.min.css') }}
     {{ CSS.push('less/widget.less') }}
     {{ CSS.render('css/widget.min.css') }}
-
+    {{ JS.push('js/lib/modernizr.js') }}
+    {{ JS.push('js/lib/bootstrap.js') }}
+    {{ JS.push('js/lib/moment.js') }}
     {{ JS.push('js/app_config.js') }}
     {{ JS.push('js/console.js') }}
     {{ JS.push('js/lib/jquery.js') }}
     {{ JS.render('js/widget-header.min.js') }}
 </head>
 <body>
-    <h1>Let's rap.</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3>{{CA[0]}}</h3>
+                <p><strong>Population:</strong> {{CA[6]|format_comma}}</p>
+                <p><strong>White:</strong> {{CA[11]}}%</p>
+                <p><strong>Black:</strong> {{CA[16]}}%</p>
+                <p><strong>Hispanic:</strong> {{CA[21]}}%</p>
+                <p><strong>65+:</strong> {{CA[26]}}%</p>
+                <p><strong>5-19:</strong> {{CA[31]}}%</p>
+                <p><strong>Income:</strong> {{CA[41]|format_currency}}</p>
+                <p><strong>Median housing value:</strong> {{CA[51]|format_currency}}</p>
+                <p><strong>Poverty:</strong> {{CA[61]}}%</p>
+                <p><strong>Socioeconmic Index:</strong> {{CA[-1]}}</p>
+                <p><strong>Gentrification Index:</strong> {{CA[-1]}}</p>
+
+            </div>
+            <div class="col-sm-6">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+
 
 {{ JS.push('js/widget.js') }}
 {{ JS.render('js/widget-footer.min.js') }}
+
+<script>
+
+    var map = L.map('map',{
+        zoomControl:false,
+    });
+
+    function getStyle(ca){
+        if (ca=={{ca_num}}){
+            return {
+                    weight: 0,
+                    opacity: 1,
+                    color: 'red',
+                    fillColor:"red",
+                    fillOpacity: 1
+                };
+        } else {
+            return {
+                    weight: .75,
+                    opacity: 1,
+                    color: 'white',
+                    fillColor:"#999",
+                    fillOpacity: 0.25
+                };
+        }
+    }
+
+    $.getJSON("/assets/gentrification_map.geojson", function(data) {
+        var geojson = L.geoJson(data, {
+            style: function (feature) {
+                return getStyle(feature.properties["AREA_NUMBE"]);
+            },
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup(feature.properties["CA Data for WBEZ_Community_Area"]);
+            }
+        }).addTo(map);
+        map.fitBounds(geojson.getBounds());
+        // Disable drag and zoom handlers.
+        map.dragging.disable();
+        map.touchZoom.disable();
+        map.doubleClickZoom.disable();
+        map.scrollWheelZoom.disable();
+
+        // Disable tap handler, if present.
+        if (map.tap) map.tap.disable();
+    });
+
+</script>
+
 </body>
 </html>

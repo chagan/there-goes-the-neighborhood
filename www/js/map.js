@@ -4,10 +4,16 @@
 
     function getColor(index){
     	console.log(index);
-    	if (index > 0) {
-    		return "green";
-    	} else {
-    		return "red";
+    	if (index > 6) {
+    		return "#018571";
+    	} else if (index > 0) {
+    		return "#80cdc1";
+    	} else if (index > -1) {
+    		return "#f5f5f5";
+    	} else if (index > -7) {
+    		return "#dfc276";
+    	} else if (index > -14) {	
+    		return "#a6611a";
     	}
     }
 
@@ -23,7 +29,7 @@
 			    };
 		    },
 		    onEachFeature: function (feature, layer) {
-		        layer.bindPopup(feature.properties["CA Data for WBEZ_Community_Area"]);
+		        layer.bindPopup("<strong>"+feature.properties["CA Data for WBEZ_Community_Area"]+"</strong><br>Index: "+feature.properties["CA Data for WBEZ_S_2010"]);
 		    }
 		}).addTo(map);
 		map.fitBounds(geojson.getBounds());

@@ -9,6 +9,8 @@ import app_config
 from render_utils import make_context, smarty_filter, urlencode_filter
 import static
 
+from gentrification import make_ca_context
+
 app = Flask(__name__)
 
 app.add_template_filter(smarty_filter, name='smarty')
@@ -46,12 +48,13 @@ def comments():
     """
     return make_response(render_template('comments.html', **make_context()))
 
-@app.route('/widget.html')
-def widget():
+@app.route('/widget/<ca_num>')
+def widget(ca_num):
     """
     Embeddable widget example page.
     """
-    return make_response(render_template('widget.html', **make_context()))
+
+    return make_response(render_template('widget.html', ca_num=ca_num,**make_ca_context(ca=ca_num)))
 
 @app.route('/test_widget.html')
 def test_widget():
