@@ -48,13 +48,15 @@ def comments():
     """
     return make_response(render_template('comments.html', **make_context()))
 
-@app.route('/widget/<ca_num>')
-def widget(ca_num):
-    """
-    Embeddable widget example page.
-    """
 
-    return make_response(render_template('widget.html', ca_num=ca_num,**make_ca_context(ca=ca_num)))
+for num in range(1,78):
+    @app.route('/widget/%s/' % num)
+    def widget():
+        """
+        Embeddable widget example page.
+        """
+
+        return make_response(render_template('widget.html', ca_num=num,**make_ca_context(ca=num)))
 
 @app.route('/test_widget.html')
 def test_widget():

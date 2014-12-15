@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h1>{{ COPY.content.project_name|smarty }}</h1>
-                <h2>{{ COPY.content.lorem_ipsum|smarty }}</h2>
+                <h2>{{ COPY.content.subhead|smarty }}</h2>
                 <div id="story-meta">
                     <p class="byline">by <span>{{ COPY.content.byline }}</span></p>
                     <p class="dateblock">
@@ -22,11 +22,11 @@
 {% block content %}
     <div class="row">
         <div class="col-sm-12">
-            <p>{{ COPY.content.nut_graph }}</p>
+            {{ COPY.content.main_intro }}
             {% for story in COPY.stories %}
                 <div class="story">
-                    <img src="{{story.image}}" class="pull-left">
-                    <h2>{{story.title}}</h2>
+                    <img src="{{story.image}}" class="pull-left story-image img-thumbnail">
+                    <a href="{{story.link}}"><h2>{{story.title}}</h2></a>
                     <small>by {{story.byline}}</small>
                     <p>{{story.description}}</p>
                 </div>
@@ -38,11 +38,41 @@
         <div class="col-sm-4">
         <h2>Where is gentrification in Chicago?</h2>
             <p class="pull-left map-explainer">
-                Gentrification is concentrated in a few areas within Chicago. More common is decline and disinvestment, which has accelerated over the past decade. This map shows where community areas are gentrifying and where they area declining.
+                {{COPY.content.map_graph}}
             </p>
+
+                <div id='legend'>
+                    <div class="socio-map-legend">
+                      <strong>2010 Socioeconomic factors</strong>
+                      <nav class='legend clearfix'>
+                        <span style='background:#a6611a;'></span><label>-13 to -7</label>
+                        <span style='background:#dfc276;'></span><label>-6 to 0</label>
+                        <span style='background:#f5f5f5;'></span><label>0</label>
+                        <span style='background:#80cdc1;'></span><label>1 to 6</label>
+                        <span style='background:#018571;'></span><label>7+</label>
+                    <p>{{COPY.content.socio_map_legend}}</p>
+                    </div>
+                    <div class="index-map-legend">
+                      <strong>Change in score from 1970-2010</strong>
+                      <nav class='legend clearfix'>
+                        <span style='background:#ffffbf;'></span><label>Stable Upper Class</label>
+                        <span style='background:#fee090;'></span><label>Stable Middle Class</label>
+                        <span style='background:#74add1;'></span><label>Poverty</label>
+                        <span style='background:#4575b4;'></span><label>Extreme Poverty</label>
+                        <span style='background:#a6d96a;'></span><label>Not Gentrification</label>
+                        <span style='background:#1a9850;'></span><label>Gentrification</label>
+                        <span style='background:#b2abd2;'></span><label>Mild Decline</label>
+                        <span style='background:#8073ac;'></span><label>Moderate Decline</label>
+                        <span style='background:#542788;'></span><label>Serious Decline</label>
+                    <p>{{COPY.content.socio_map_legend}}</p>
+                    </div>
+                </div>
         </div>
-        <div class="col-sm-8">
-            <div id='map'></div>
+        <div class="col-sm-8 map-container">
+            <button type="button" class="btn btn-info socio-btn">2010 Socioeconomic score</button>
+            <button type="button" class="btn btn-default index-btn">Socioeconomic change, 1970-2010</button>
+            <div id='map_socio'></div>
+            <div id='map_index'></div>
         </div>
     </div>
     <hr>
@@ -50,7 +80,7 @@
         <div class="col-sm-12">
         <h2>Explore the Community Areas</h2>
             <p class="pull-left map-explainer">
-                Gentrification is concentrated in a few areas within Chicago. More common is decline and disinvestment, which has accelerated over the past decade. This map shows where community areas are gentrifying and where they area declining.
+                {{COPY.content.community_areas}}
             </p>
                 <div class="main-table">
                     <table id="data" class="table table-striped table-condensed" cellspacing="0">
@@ -61,11 +91,13 @@
                                 <th>White %</th>
                                 <th>Black %</th>
                                 <th>Hispanic %</th>
-                                <th>Income</th>
-                                <th>Median Home Value</th>
-                                <th>Owner Occupied Housing %</th>
-                                <th>2000 Socioeconomic Score</th>
-                                <th>2010 Socioeconomic Score</th>
+                                <th class="hidden-sm hidden-xs">Elderly (65+) %</th>
+                                <th class="hidden-sm hidden-xs">Children (5-19) %</th>
+                                <th class="hidden-xs">Median Family Income</th>
+                                <th class="hidden-xs">Median Home Value</th>
+                                <th class="hidden-sm hidden-xs">Owner-Occupied housing %</th>
+                                <th class="hidden-sm hidden-xs">College Education %</th>
+                                <th class="hidden-xs">Families in poverty %</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,11 +108,13 @@
                             <td>{{ '%0.f'| format(row.Wht_10|float) }}</td>
                             <td>{{ '%0.f'| format(row.Blk_10|float) }}</td>
                             <td>{{ '%0.f'| format(row.His_10|float) }}</td>
-                            <td>{{ row.income_10 | format_currency }}</td>
-                            <td>{{ row.Hval_10 | format_currency }}</td>
-                            <td>{{ '%0.f'| format(row.owner_10|float) }}</td>
-                            <td>{{ row.S_2000 }}</td>
-                            <td>{{ row.S_2010 }}</td>
+                            <td class="hidden-sm hidden-xs">{{ '%0.f'| format(row.P65_10|float) }}</td>
+                            <td class="hidden-sm hidden-xs">{{ '%0.f'| format(row.P5to19_10|float) }}</td>
+                            <td class="hidden-xs">{{ row.income_10 | format_currency }}</td>
+                            <td class="hidden-xs">{{ row.Hval_10 | format_currency }}</td>
+                            <td class="hidden-sm hidden-xs">{{ '%0.f'| format(row.owner_10|float) }}</td>
+                            <td class="hidden-sm hidden-xs">{{ '%0.f'| format(row.college_10|float) }}</td>
+                            <td class="hidden-xs">{{ '%0.f'| format(row.Pov_10|float) }}</td>
                         </tr>
                         {% endfor %}
                         </tbody>
@@ -90,12 +124,23 @@
     </div>
 {% endblock %}
 
+{% block extra_foot %}
+<script type="text/javascript">
 
-{% block wide_content %}
-<div class="row">
-    <div class="col-md-12">
-        <h2>{{ COPY.content.footer_title }}</h2>
-        <p>{{ COPY.content.lorem_ipsum }}</p>
-    </div>
-</div>
-{% endblock %}
+$('.socio-btn').click(function(){
+    $('#map_socio, .socio-map-legend').show();
+    $('#map_index, .index-map-legend').hide();
+    $(".socio-btn").removeClass( "btn-default" ).addClass( "btn-info" );
+    $(".index-btn").removeClass( "btn-info" ).addClass( "btn-default" );
+})
+
+$('.index-btn').click(function(){
+    $('#map_socio, .socio-map-legend').hide();
+    $('#map_index, .index-map-legend').show();
+    $(".socio-btn").removeClass( "btn-info" ).addClass( "btn-default" );
+    $(".index-btn").removeClass( "btn-default" ).addClass( "btn-info" );
+})
+
+</script>
+
+{% endblock extra_foot %}

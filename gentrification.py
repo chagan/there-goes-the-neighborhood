@@ -26,10 +26,9 @@ def make_ca_context(ca, asset_depth=0):
     community_area = ''
 
     for row in sheet:
-    	if row['CA_number'] == ca:
-    		community_area = row
-    		break
-
+        if row['CA_number'] == ca:
+            community_area = row
+            break
 
     context['COPY'] = copytext.Copy(app_config.COPY_PATH)
     context['JS'] = JavascriptIncluder(asset_depth=asset_depth)

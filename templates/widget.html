@@ -82,9 +82,6 @@
         var geojson = L.geoJson(data, {
             style: function (feature) {
                 return getStyle(feature.properties["AREA_NUMBE"]);
-            },
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties["CA Data for WBEZ_Community_Area"]);
             }
         }).addTo(map);
         map.fitBounds(geojson.getBounds());
