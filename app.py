@@ -55,8 +55,10 @@ for num in range(1,78):
         """
         Embeddable widget example page.
         """
+        from flask import request
+        ca = request.path.split('/')[2]
 
-        return make_response(render_template('widget.html', ca_num=num,**make_ca_context(ca=num)))
+        return make_response(render_template('widget.html', ca_num=ca,**make_ca_context(ca=ca)))
 
 @app.route('/test_widget.html')
 def test_widget():

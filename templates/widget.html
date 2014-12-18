@@ -27,7 +27,7 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-xs-6">
                 <h3>{{CA[0]}}</h3>
                 <p><strong>Population:</strong> {{CA[6]|format_comma}}</p>
                 <p><strong>White:</strong> {{CA[11]}}%</p>
@@ -38,13 +38,14 @@
                 <p><strong>Income:</strong> {{CA[41]|format_currency}}</p>
                 <p><strong>Median housing value:</strong> {{CA[51]|format_currency}}</p>
                 <p><strong>Poverty:</strong> {{CA[61]}}%</p>
-                <p><strong>Socioeconmic Index:</strong> {{CA[-1]}}</p>
-                <p><strong>Gentrification Index:</strong> {{CA[-1]}}</p>
-
+                <p><strong>Socioeconmic Index:</strong> {{CA[-2]}}</p>
+                <p class="gentrification_index"></p>
+                
             </div>
-            <div class="col-sm-6">
+            <div class="col-xs-6">
                 <div id="map"></div>
             </div>
+            <p>Learn more about the <a href="http://interactive.wbez.org/gentrification">index scores and definitions here.</a></p>
         </div>
     </div>
 
@@ -78,7 +79,7 @@
         }
     }
 
-    $.getJSON("/assets/gentrification_map.geojson", function(data) {
+    $.getJSON("../../assets/gentrification_map.geojson", function(data) {
         var geojson = L.geoJson(data, {
             style: function (feature) {
                 return getStyle(feature.properties["AREA_NUMBE"]);
@@ -94,6 +95,14 @@
         // Disable tap handler, if present.
         if (map.tap) map.tap.disable();
     });
+
+    var index_names = ["No Change, Upper Class","No Change, Middle Class","No Change, Poverty","No Change, Extreme Poverty","Positive Change, Not Gentrification","Positive Change, Gentrification","Negative Change","Negative Change, Mild Decline","Negative Change, Moderate Decline","Negative Change, Serious Decline"]
+
+    $('.gentrification_index').html(function(){
+        var index_num = {{CA[-1]}}-1;
+        console.log(index_num);
+        return "<strong>Gentrification Index:</strong> "+index_names[index_num]
+    })
 
 </script>
 
